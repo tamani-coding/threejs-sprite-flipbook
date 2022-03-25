@@ -100,17 +100,17 @@ window.addEventListener('resize', onWindowResize);
 function generateFloor() {
     // TEXTURES
     const textureLoader = new THREE.TextureLoader();
-    const placeholder = textureLoader.load("./textures/placeholder/placeholder.png");
+    const groundTexture = textureLoader.load("./textures/pixelgrass.png");
 
-    const WIDTH = 4
-    const LENGTH = 4
-    const NUM_X = 15
-    const NUM_Z = 15
+    const WIDTH = 3
+    const LENGTH = 3
+    const NUM_X = 10
+    const NUM_Z = 10
 
     const geometry = new THREE.PlaneGeometry(WIDTH, LENGTH, 512, 512);
     const material = new THREE.MeshStandardMaterial(
         {
-            map: placeholder
+            map: groundTexture
         })
     // const material = new THREE.MeshPhongMaterial({ map: placeholder})
 
@@ -131,7 +131,7 @@ function generateFloor() {
 function light() {
     scene.add(new THREE.AmbientLight(0xffffff, 0.7))
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1)
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8)
     dirLight.position.set(- 60, 100, - 10);
     dirLight.castShadow = true;
     dirLight.shadow.camera.top = 50;
