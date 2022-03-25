@@ -1,6 +1,12 @@
+import { SpriteFlipbook } from './../SpriteFlipbook';
 import { KeyDisplay } from './utils';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+const IDLE_RIGHT = [0,1,2,3];
+const RUN_RIGHT = [8,9,10,11,12,13,16,17,18,19,20,21];
+const IDLE_LEFT = [24,25,26,27];
+const RUN_LEFT = [32,33,34,35,36,37,40,41,42,43,44,45];
 
 // SCENE
 const scene = new THREE.Scene();
@@ -8,7 +14,7 @@ scene.background = new THREE.Color(0xa8def0);
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.y = 5;
+camera.position.y = 1;
 camera.position.z = 5;
 camera.position.x = 0;
 
@@ -33,8 +39,12 @@ light()
 // FLOOR
 generateFloor()
 
+//SPRITE
+const spriteFlipbook = new SpriteFlipbook('sprites/sprite_character_32px.png', 8, 8, scene);
+spriteFlipbook.loop(RUN_LEFT, 0, 1.5 / RUN_LEFT.length);
+
 // CONTROL KEYS
-const keysPressed = {  }
+const keysPressed = {}
 const keyDisplayQueue = new KeyDisplay();
 document.addEventListener('keydown', (event) => {
     keyDisplayQueue.down(event.key)
@@ -51,6 +61,8 @@ function animate() {
     orbitControls.update()
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
+
+    spriteFlipbook.update(mixerUpdateDelta);
 }
 document.body.appendChild(renderer.domElement);
 animate();
