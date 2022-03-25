@@ -3,6 +3,7 @@ import { KeyDisplay } from './utils';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
+const CHARACTER_SPRITE_SHEET = 'sprites/sprite_character_32px.png';
 const IDLE_RIGHT = [0,1,2,3];
 const RUN_RIGHT = [8,9,10,11,12,13,16,17,18,19,20,21];
 const IDLE_LEFT = [24,25,26,27];
@@ -40,8 +41,26 @@ light()
 generateFloor()
 
 //SPRITE
-const spriteFlipbook = new SpriteFlipbook('sprites/sprite_character_32px.png', 8, 8, scene);
-spriteFlipbook.loop(RUN_LEFT, 0, 1.5 / RUN_LEFT.length);
+const FLIPBOOKS: SpriteFlipbook[] = [];
+const spriteFlipbook1 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
+spriteFlipbook1.loop(IDLE_RIGHT, 0, 1.5);
+spriteFlipbook1.position(-1.5, 0.5, 0);
+FLIPBOOKS.push(spriteFlipbook1);
+
+const spriteFlipbook2 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
+spriteFlipbook2.loop(RUN_RIGHT, 0, 1.5);
+spriteFlipbook2.position(-0.5, 0.5, 0);
+FLIPBOOKS.push(spriteFlipbook2);
+
+const spriteFlipbook3 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
+spriteFlipbook3.loop(IDLE_LEFT, 0, 1.5);
+spriteFlipbook3.position(0.5, 0.5, 0);
+FLIPBOOKS.push(spriteFlipbook3);
+
+const spriteFlipbook4 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
+spriteFlipbook4.loop(RUN_LEFT, 0, 1.5);
+spriteFlipbook4.position(1.5, 0.5, 0);
+FLIPBOOKS.push(spriteFlipbook4);
 
 // CONTROL KEYS
 const keysPressed = {}
@@ -62,7 +81,7 @@ function animate() {
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 
-    spriteFlipbook.update(mixerUpdateDelta);
+    FLIPBOOKS.forEach(b => b.update(mixerUpdateDelta));
 }
 document.body.appendChild(renderer.domElement);
 animate();

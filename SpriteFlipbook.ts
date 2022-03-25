@@ -13,6 +13,7 @@ export class SpriteFlipbook {
     private playIndex = 0;
 
     private playSpriteIndices: number[] = []; 
+    private sprite : THREE.Sprite;
 
     constructor(spriteTexture: string, tilesHoriz: number, tilesVert: number, scene: Scene) {
         this.tilesHoriz = tilesHoriz;
@@ -26,15 +27,21 @@ export class SpriteFlipbook {
     
         const material = new THREE.SpriteMaterial({ map: this.map });
     
-        const sprite = new THREE.Sprite(material);
-        sprite.position.y = 0.5;
-        scene.add(sprite);
+        this.sprite = new THREE.Sprite(material);
+        
+        scene.add(this.sprite);
     }
 
-    public loop(playSpriteIndices: number[], start: number, maxDisplayTime: number) {
+    public loop(playSpriteIndices: number[], start: number, totalDuration: number) {
         this.playSpriteIndices = playSpriteIndices;
         this.currentTile = start;
-        this.maxDisplayTime = maxDisplayTime;
+        this.maxDisplayTime = totalDuration / this.playSpriteIndices.length;
+    }
+
+    public position (x: number, y: number, z: number) {
+        this.sprite.position.x = x;
+        this.sprite.position.y = y;
+        this.sprite.position.z = z;
     }
 
     public update(delta: number) {
@@ -44,7 +51,6 @@ export class SpriteFlipbook {
             this.currentTime = 0;
             this.playIndex = (this.playIndex + 1) % this.playSpriteIndices.length;
             this.currentTile = this.playSpriteIndices[this.playIndex];
-            console.log(this.playIndex);
 
             const offsetX  = (this.currentTile % this.tilesHoriz) / this.tilesHoriz;
             const offsetY = (this.tilesVert - Math.floor(this.currentTile / this.tilesHoriz) -1 ) / this.tilesVert;
