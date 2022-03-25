@@ -2,6 +2,8 @@ import { SpriteFlipbook } from './../SpriteFlipbook';
 import { KeyDisplay } from './utils';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 
 const CHARACTER_SPRITE_SHEET = 'sprites/sprite_character_32px.png';
 const IDLE_RIGHT = [0,1,2,3];
@@ -143,3 +145,101 @@ function light() {
     scene.add(dirLight);
     // scene.add( new THREE.CameraHelper(dirLight.shadow.camera))
 }
+
+const church = 'objects/Church_RedTeam';
+const market = 'objects/Market_BlueTeam';
+const house = 'objects/House_Level1_BlueTeam';
+const normal_tree = 'objects/Normal_tree';
+
+function loadObjects () {
+
+    const mtlLoader = new MTLLoader();
+
+    mtlLoader.load(`${church}.mtl`, function (materials) {
+        new OBJLoader().setMaterials(materials).loadAsync(`${church}.obj`).then((group) => {
+          const obj = group.children[0];
+
+          obj.scale.x = 0.15
+          obj.scale.y = 0.15
+          obj.scale.z = 0.15
+
+          obj.position.y = 2
+          obj.position.z = -12
+          obj.position.x = 2
+
+          obj.castShadow = true
+          obj.receiveShadow = true
+
+          obj.rotation.y = -Math.PI/2
+
+          scene.add(obj)
+        })
+      });
+
+      mtlLoader.load(`${market}.mtl`, function (materials) {
+        new OBJLoader().setMaterials(materials).loadAsync(`${market}.obj`).then((group) => {
+          const obj = group.children[0];
+
+          obj.scale.x = 0.15
+          obj.scale.y = 0.15
+          obj.scale.z = 0.15
+
+          obj.position.y = 0.3
+          obj.position.z = -3
+          obj.position.x = 3
+
+          obj.castShadow = true
+          obj.receiveShadow = true
+
+          obj.rotation.y = -Math.PI/5
+
+          scene.add(obj)
+        })
+      });
+
+      mtlLoader.load(`${house}.mtl`, function (materials) {
+        new OBJLoader().setMaterials(materials).loadAsync(`${house}.obj`).then((group) => {
+            group.children.forEach(obj => {
+
+                obj.scale.x = 0.2
+                obj.scale.y = 0.2
+                obj.scale.z = 0.2
+      
+                obj.position.y = 1
+                obj.position.z = -5
+                obj.position.x = -2
+      
+                obj.castShadow = true
+                obj.receiveShadow = true
+      
+                obj.rotation.y = -Math.PI/3
+      
+                scene.add(obj)
+            })
+        })
+      });
+
+      mtlLoader.load(`${normal_tree}.mtl`, function (materials) {
+        new OBJLoader().setMaterials(materials).loadAsync(`${normal_tree}.obj`).then((group) => {
+            group.children.forEach(obj => {
+
+                obj.scale.x = 0.2
+                obj.scale.y = 0.2
+                obj.scale.z = 0.2
+      
+                obj.position.y = 0.9
+                obj.position.z = -2
+                obj.position.x = -4
+      
+                obj.castShadow = true
+                obj.receiveShadow = true
+      
+                obj.rotation.y = -Math.PI/3
+      
+                scene.add(obj)
+            })
+        })
+      });
+
+}
+loadObjects ();

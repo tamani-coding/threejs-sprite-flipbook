@@ -54,7 +54,7 @@ export class SpriteFlipbook {
 
             const offsetX  = (this.currentTile % this.tilesHoriz) / this.tilesHoriz;
             const offsetY = (this.tilesVert - Math.floor(this.currentTile / this.tilesHoriz) -1 ) / this.tilesVert;
-        
+
             this.map.offset.x = offsetX;
             this.map.offset.y = offsetY;
         }
