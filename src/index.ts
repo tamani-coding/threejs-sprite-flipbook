@@ -28,7 +28,8 @@ orbitControls.enableDamping = true
 orbitControls.minDistance = 5
 orbitControls.maxDistance = 15
 orbitControls.enablePan = false
-orbitControls.maxPolarAngle = Math.PI / 2 - 0.05
+orbitControls.maxPolarAngle = Math.PI / 2 - 0.05 // don't rotate below ground
+orbitControls.minPolarAngle = Math.PI / 3        // no top down view
 orbitControls.update();
 
 // LIGHTS
@@ -38,7 +39,7 @@ light()
 generateFloor()
 
 //SPRITE CONTROLLER
-const spriteController = new SpriteCharacterController(camera, scene);
+const spriteController = new SpriteCharacterController(camera, orbitControls, scene);
 
 const clock = new THREE.Clock();
 // ANIMATE

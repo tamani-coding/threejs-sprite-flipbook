@@ -23,7 +23,7 @@ export class SpriteFlipbook {
      * @param spriteTexture A sprite sheet with sprite tiles
      * @param tilesHoriz Horizontal number of tiles
      * @param tilesVert Vertical number of tiles
-     * @param scene THree.js scene which will contain the sprite
+     * @param scene Three.js scene which will contain the sprite
      */
     constructor(spriteTexture: string, tilesHoriz: number, tilesVert: number, scene: Scene) {
         this.tilesHoriz = tilesHoriz;
@@ -49,10 +49,20 @@ export class SpriteFlipbook {
         this.currentTime = this.maxDisplayTime; // force to play new animation
     }
 
-    public position (x: number, y: number, z: number) {
+    public setPosition (x: number, y: number, z: number) {
         this.sprite.position.x = x;
         this.sprite.position.y = y;
         this.sprite.position.z = z;
+    }
+
+    public addPosition (x: number, y: number, z: number) {
+        this.sprite.position.x += x;
+        this.sprite.position.y += y;
+        this.sprite.position.z += z;
+    }
+
+    public getPosition (): THREE.Vector3 {
+        return this.sprite.position;
     }
 
     public update(delta: number) {
