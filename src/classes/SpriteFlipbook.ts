@@ -70,7 +70,7 @@ export class SpriteFlipbook {
         this.elapsedTime += delta;
 
         if (this.maxDisplayTime > 0 && this.elapsedTime >= this.maxDisplayTime) {
-            this.elapsedTime = this.elapsedTime & this.maxDisplayTime;
+            this.elapsedTime = 0;
             this.runningTileArrayIndex = (this.runningTileArrayIndex + 1) % this.playSpriteIndices.length;
             this.currentTile = this.playSpriteIndices[this.runningTileArrayIndex];
 
