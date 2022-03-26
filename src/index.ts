@@ -1,4 +1,4 @@
-import { SpriteFlipbook } from './../SpriteFlipbook';
+import { SpriteFlipbook } from './SpriteFlipbook';
 import { KeyDisplay } from './utils';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'

@@ -1,20 +1,30 @@
 import { Scene } from "three";
 import * as THREE from 'three'
 
+/**
+ * This class provides to functionality to animate sprite sheets.
+ */
 export class SpriteFlipbook {
 
-    private tilesHoriz = 8 ;
-    private tilesVert = 8 ;
+    private tilesHoriz = 0;
+    private tilesVert = 0;
     private currentTile = 0 ;
 
     private map: THREE.Texture;
-    private maxDisplayTime = 0.15;
+    private maxDisplayTime = 0;
     private currentTime = 0;
-    private playIndex = 0;
+    private currentTileIndex = 0;
 
     private playSpriteIndices: number[] = []; 
     private sprite : THREE.Sprite;
 
+    /**
+     * 
+     * @param spriteTexture A sprite sheet with sprite tiles
+     * @param tilesHoriz Horizontal number of tiles
+     * @param tilesVert Vertical number of tiles
+     * @param scene THree.js scene which will contain the sprite
+     */
     constructor(spriteTexture: string, tilesHoriz: number, tilesVert: number, scene: Scene) {
         this.tilesHoriz = tilesHoriz;
         this.tilesVert = tilesVert;
@@ -32,9 +42,9 @@ export class SpriteFlipbook {
         scene.add(this.sprite);
     }
 
-    public loop(playSpriteIndices: number[], start: number, totalDuration: number) {
+    public loop(playSpriteIndices: number[], startTileIndex: number, totalDuration: number) {
         this.playSpriteIndices = playSpriteIndices;
-        this.currentTile = start;
+        this.currentTile = startTileIndex;
         this.maxDisplayTime = totalDuration / this.playSpriteIndices.length;
     }
 
@@ -47,10 +57,10 @@ export class SpriteFlipbook {
     public update(delta: number) {
         this.currentTime += delta;
 
-        if (this.currentTime >= this.maxDisplayTime) {
+        if (this.maxDisplayTime > 0 && this.currentTime >= this.maxDisplayTime) {
             this.currentTime = 0;
-            this.playIndex = (this.playIndex + 1) % this.playSpriteIndices.length;
-            this.currentTile = this.playSpriteIndices[this.playIndex];
+            this.currentTileIndex = (this.currentTileIndex + 1) % this.playSpriteIndices.length;
+            this.currentTile = this.playSpriteIndices[this.currentTileIndex];
 
             const offsetX  = (this.currentTile % this.tilesHoriz) / this.tilesHoriz;
             const offsetY = (this.tilesVert - Math.floor(this.currentTile / this.tilesHoriz) -1 ) / this.tilesVert;
