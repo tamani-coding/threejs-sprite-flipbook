@@ -12,8 +12,8 @@ export class SpriteFlipbook {
 
     private map: THREE.Texture;
     private maxDisplayTime = 0;
-    private currentTime = 0;
-    private currentTileIndex = 0;
+    private elapsedTime = 0;
+    private runningTileArrayIndex = 0;
 
     private playSpriteIndices: number[] = []; 
     private sprite : THREE.Sprite;
@@ -44,9 +44,10 @@ export class SpriteFlipbook {
 
     public loop(playSpriteIndices: number[], totalDuration: number) {
         this.playSpriteIndices = playSpriteIndices;
-        this.currentTile = playSpriteIndices[0];
+        this.runningTileArrayIndex = 0;
+        this.currentTile = playSpriteIndices[this.runningTileArrayIndex];
         this.maxDisplayTime = totalDuration / this.playSpriteIndices.length;
-        this.currentTime = this.maxDisplayTime; // force to play new animation
+        this.elapsedTime = this.maxDisplayTime; // force to play new animation
     }
 
     public setPosition (x: number, y: number, z: number) {
@@ -66,12 +67,12 @@ export class SpriteFlipbook {
     }
 
     public update(delta: number) {
-        this.currentTime += delta;
+        this.elapsedTime += delta;
 
-        if (this.maxDisplayTime > 0 && this.currentTime >= this.maxDisplayTime) {
-            this.currentTime = this.currentTime & this.maxDisplayTime;
-            this.currentTileIndex = (this.currentTileIndex + 1) % this.playSpriteIndices.length;
-            this.currentTile = this.playSpriteIndices[this.currentTileIndex];
+        if (this.maxDisplayTime > 0 && this.elapsedTime >= this.maxDisplayTime) {
+            this.elapsedTime = this.elapsedTime & this.maxDisplayTime;
+            this.runningTileArrayIndex = (this.runningTileArrayIndex + 1) % this.playSpriteIndices.length;
+            this.currentTile = this.playSpriteIndices[this.runningTileArrayIndex];
 
             const offsetX  = (this.currentTile % this.tilesHoriz) / this.tilesHoriz;
             const offsetY = (this.tilesVert - Math.floor(this.currentTile / this.tilesHoriz) -1 ) / this.tilesVert;
