@@ -1,15 +1,10 @@
-import { SpriteFlipbook } from './SpriteFlipbook';
-import { KeyDisplay } from './utils';
+import { SpriteCharacterController } from './classes/SpriteCharacterController';
+import { KeyDisplay } from './classes/utils';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 
-const CHARACTER_SPRITE_SHEET = 'sprites/sprite_character_32px.png';
-const IDLE_RIGHT = [0,1,2,3];
-const RUN_RIGHT = [8,9,10,11,12,13,16,17,18,19,20,21];
-const IDLE_LEFT = [24,25,26,27];
-const RUN_LEFT = [32,33,34,35,36,37,40,41,42,43,44,45];
 
 // SCENE
 const scene = new THREE.Scene();
@@ -42,38 +37,8 @@ light()
 // FLOOR
 generateFloor()
 
-//SPRITE
-const FLIPBOOKS: SpriteFlipbook[] = [];
-const spriteFlipbook1 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
-spriteFlipbook1.loop(IDLE_RIGHT, 0, 1.5);
-spriteFlipbook1.position(-1.5, 0.5, 0);
-FLIPBOOKS.push(spriteFlipbook1);
-
-const spriteFlipbook2 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
-spriteFlipbook2.loop(RUN_RIGHT, 0, 1.5);
-spriteFlipbook2.position(-0.5, 0.5, 0);
-FLIPBOOKS.push(spriteFlipbook2);
-
-const spriteFlipbook3 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
-spriteFlipbook3.loop(IDLE_LEFT, 0, 1.5);
-spriteFlipbook3.position(0.5, 0.5, 0);
-FLIPBOOKS.push(spriteFlipbook3);
-
-const spriteFlipbook4 = new SpriteFlipbook(CHARACTER_SPRITE_SHEET, 8, 8, scene);
-spriteFlipbook4.loop(RUN_LEFT, 0, 1.5);
-spriteFlipbook4.position(1.5, 0.5, 0);
-FLIPBOOKS.push(spriteFlipbook4);
-
-// CONTROL KEYS
-const keysPressed = {}
-const keyDisplayQueue = new KeyDisplay();
-document.addEventListener('keydown', (event) => {
-    keyDisplayQueue.down(event.key)
-}, false);
-document.addEventListener('keyup', (event) => {
-    keyDisplayQueue.up(event.key);
-    (keysPressed as any)[event.key.toLowerCase()] = false
-}, false);
+//SPRITE CONTROLLER
+const spriteController = new SpriteCharacterController(camera, scene);
 
 const clock = new THREE.Clock();
 // ANIMATE
@@ -83,10 +48,13 @@ function animate() {
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 
-    FLIPBOOKS.forEach(b => b.update(mixerUpdateDelta));
+    spriteController.update(mixerUpdateDelta);
 }
 document.body.appendChild(renderer.domElement);
 animate();
+
+// PRESSED BUTTONS DISPLAY
+const keyDisplayQueue = new KeyDisplay();
 
 // RESIZE HANDLER
 function onWindowResize() {

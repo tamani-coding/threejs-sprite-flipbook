@@ -35,6 +35,13 @@ export class KeyDisplay {
         this.map.forEach( (v, _) => {
             document.body.append(v)
         })
+
+        document.addEventListener('keydown', (event) => {
+            this.down(event.key)
+        }, false);
+        document.addEventListener('keyup', (event) => {
+            this.up(event.key);
+        }, false);
     }
 
     public updatePosition() {

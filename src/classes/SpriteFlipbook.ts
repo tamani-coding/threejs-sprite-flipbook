@@ -42,10 +42,11 @@ export class SpriteFlipbook {
         scene.add(this.sprite);
     }
 
-    public loop(playSpriteIndices: number[], startTileIndex: number, totalDuration: number) {
+    public loop(playSpriteIndices: number[], totalDuration: number) {
         this.playSpriteIndices = playSpriteIndices;
-        this.currentTile = startTileIndex;
+        this.currentTile = playSpriteIndices[0];
         this.maxDisplayTime = totalDuration / this.playSpriteIndices.length;
+        this.currentTime = this.maxDisplayTime; // force to play new animation
     }
 
     public position (x: number, y: number, z: number) {
@@ -58,7 +59,7 @@ export class SpriteFlipbook {
         this.currentTime += delta;
 
         if (this.maxDisplayTime > 0 && this.currentTime >= this.maxDisplayTime) {
-            this.currentTime = 0;
+            this.currentTime = this.currentTime & this.maxDisplayTime;
             this.currentTileIndex = (this.currentTileIndex + 1) % this.playSpriteIndices.length;
             this.currentTile = this.playSpriteIndices[this.currentTileIndex];
 
