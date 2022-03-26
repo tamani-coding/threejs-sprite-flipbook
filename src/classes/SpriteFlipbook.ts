@@ -30,7 +30,7 @@ export class SpriteFlipbook {
         this.tilesVert = tilesVert;
 
         this.map = new THREE.TextureLoader().load(spriteTexture);
-        this.map.wrapS = this.map.wrapT = THREE.RepeatWrapping;
+        this.map.magFilter = THREE.NearestFilter;   // sharp pixel sprite
         this.map.repeat.set( 1/tilesHoriz, 1/tilesVert );
     
         this.update(0);
