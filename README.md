@@ -4,8 +4,6 @@ A simple sprite animation / sprite flipbook / sprite mixer example.
   
 See the SpriteFlipbook.ts file.  
   
-  Try the [Stackblitz](https://stackblitz.com/github/tamani-coding/threejs-sprite-flipbook) 
-  
 ![Screenshot](https://github.com/tamani-coding/threejs-sprite-flipbook/blob/main/screenshot01.png?raw=true)
 
 ## assets
